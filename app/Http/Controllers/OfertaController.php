@@ -13,7 +13,7 @@ class OfertaController extends Controller
     public function index()
     {
         $ofertas = Oferta::all();
-        return view('ofertas.oferta_index', compact('contactos'));
+        return view('ofertas.oferta_index', compact('ofertas'));
     }
 
     /**
@@ -31,10 +31,10 @@ class OfertaController extends Controller
     {
         $request->validate([
         'titulo' => 'required|min:0|max:50',
-        'vigencia' => 'required',
+        'vigencia' => 'required|date|after:today',
         'tienda' => 'required|min:0|max:50',
-        'precio_original' => 'decimal:10,2',
-        'precio_descuento' => 'decimal:10,2',
+        'precio_original'  => 'required|numeric|min:0|max:999999.99',
+        'precio_descuento' => 'required|numeric|min:0|lte:precio_original',
        ]);
 
        $oferta = new Oferta();
@@ -44,6 +44,8 @@ class OfertaController extends Controller
        $oferta->precio_original = $request->precio_original;
        $oferta->precio_descuento = $request->precio_descuento;
        $oferta->save();
+
+       return redirect()->route('ofertas.create')->with('info', '¡Formulario Recibido!');
     }
 
     /**
@@ -51,7 +53,7 @@ class OfertaController extends Controller
      */
     public function show(Oferta $oferta)
     {
-        //
+        return view('ofertas.oferta_show', compact('oferta'));
     }
 
     /**
