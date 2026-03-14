@@ -11,7 +11,7 @@
     <ul>
         <li>
             <strong>Titulo de la oferta:</strong> {{ $oferta->titulo }} | 
-            <strong>Vigencia de la oferta:</strong> {{ $oferta->vigencia }} | 
+            <strong>Vigencia de la oferta:</strong> {{ $oferta->vigencia->format('d/m/Y') }} | 
             <strong>Tienda:</strong> {{ $oferta->tienda}}
             <strong>Precio original:</strong> {{ $oferta->precio_original }}
             <strong>Precio con descuento:</strong> {{ $oferta->precio_descuento }}

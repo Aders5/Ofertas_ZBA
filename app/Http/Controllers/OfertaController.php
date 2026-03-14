@@ -61,7 +61,7 @@ class OfertaController extends Controller
      */
     public function edit(Oferta $oferta)
     {
-        //
+        return view('ofertas.oferta_edit', compact('oferta'));
     }
 
     /**
@@ -69,7 +69,22 @@ class OfertaController extends Controller
      */
     public function update(Request $request, Oferta $oferta)
     {
-        //
+        $request->validate([
+        'titulo' => 'required|min:0|max:50',
+        'vigencia' => 'required|date|after:today',
+        'tienda' => 'required|min:0|max:50',
+        'precio_original'  => 'required|numeric|min:0|max:999999.99',
+        'precio_descuento' => 'required|numeric|min:0|lte:precio_original',
+       ]);
+
+       $oferta->titulo = $request->titulo;
+       $oferta->vigencia = $request->vigencia;
+       $oferta->tienda = $request->tienda;
+       $oferta->precio_original = $request->precio_original;
+       $oferta->precio_descuento = $request->precio_descuento;
+       $oferta->save();
+
+       return redirect()->route('ofertas.show', $oferta);
     }
 
     /**
@@ -77,6 +92,7 @@ class OfertaController extends Controller
      */
     public function destroy(Oferta $oferta)
     {
-        //
+        $oferta->delete();
+        return redirect()->route('ofertas.index');
     }
 }
